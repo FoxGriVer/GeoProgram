@@ -1,0 +1,10 @@
+F:\SuperGeoLaba\Labs\bin\Release\Labs.exe
+F:\SuperGeoLaba\Labs\bin\Release\Labs.pdb
+F:\SuperGeoLaba\Labs\obj\x86\Release\ResolveAssemblyReference.cache
+F:\SuperGeoLaba\Labs\obj\x86\Release\Labs.MAP.resources
+F:\SuperGeoLaba\Labs\obj\x86\Release\Labs.View.resources
+F:\SuperGeoLaba\Labs\obj\x86\Release\Labs.Properties.Resources.resources
+F:\SuperGeoLaba\Labs\obj\x86\Release\GenerateResource.read.1.tlog
+F:\SuperGeoLaba\Labs\obj\x86\Release\GenerateResource.write.1.tlog
+F:\SuperGeoLaba\Labs\obj\x86\Release\Labs.exe
+F:\SuperGeoLaba\Labs\obj\x86\Release\Labs.pdb
