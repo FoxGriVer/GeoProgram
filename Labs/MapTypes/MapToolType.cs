@@ -10,6 +10,7 @@ namespace Labs.MapTypes
             select,
             zoomin,
             zoomout,
-            pan
+            pan,
+            interpolation
     }
 }

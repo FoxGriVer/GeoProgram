@@ -18,7 +18,7 @@ namespace Labs.Layers.Grid
         public int CountY { get; set; }
 
         /// <summary>
-        /// Ячейка
+        /// Шаг ячейки
         /// </summary>
         public double Cell { get; set; }
     }

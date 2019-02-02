@@ -71,3 +71,4 @@ C:\Users\MacPavel\Desktop\SuperGeoLaba\Labs\obj\x86\Debug\Labs.csproj.GenerateRe
 C:\Users\MacPavel\Desktop\SuperGeoLaba\Labs\obj\x86\Debug\Labs.csproj.CoreCompileInputs.cache
 C:\Users\MacPavel\Desktop\SuperGeoLaba\Labs\obj\x86\Debug\Labs.exe
 C:\Users\MacPavel\Desktop\SuperGeoLaba\Labs\obj\x86\Debug\Labs.pdb
+C:\Users\MacPavel\Desktop\SuperGeoLaba\Labs\obj\x86\Debug\Labs.GridInterpolationModalForm.resources

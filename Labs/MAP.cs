@@ -12,6 +12,7 @@ using Labs.MapObjects;
 using Labs.MapObjects.Shapes;
 using Labs.MapObjects.Points;
 using Labs.MapObjects.Lines;
+using Labs.Layers;
 using Labs.Layers.Vector;
 
 namespace Labs
@@ -21,12 +22,12 @@ namespace Labs
         public MAP()
         {
             InitializeComponent();
-            Layers = new List<VectorLayer>();
+            Layers = new List<AbstractLayer>();
             visible = true;
             mapScale = 1;
             mapCenter = new GeoPoint(0, 0);
             ActiveTool = MapToolType.select;
-        }
+        }        
 
         public LayerControl LayerControl;
         
@@ -35,7 +36,7 @@ namespace Labs
             get
             {
                 GeoRect result = new GeoRect(0,0,0,0);
-                foreach (VectorLayer layer in Layers)
+                foreach (AbstractLayer layer in Layers)
                 {
                     if (layer.Visible)
                     {
@@ -65,6 +66,7 @@ namespace Labs
 
         public System.Drawing.Point MapToScreen(GeoPoint Point)
         {
+            if (mapScale > 10 || mapScale < 0.5) mapScale = 1;
             System.Drawing.Point Result = new System.Drawing.Point();
             Result.X = (int)((Point.x - mapCenter.x) * mapScale + Width / 2 + 0.5);
             Result.Y = (int)(-(Point.y - mapCenter.y) * mapScale + Height / 2 + 0.5);
@@ -132,10 +134,10 @@ namespace Labs
             }
         }
 
-        public List<VectorLayer> Layers;
+        public List<AbstractLayer> Layers;
 
 
-        public void InsertLayers(int Index, VectorLayer Layer)
+        public void InsertLayers(int Index, AbstractLayer Layer)
         {
             Layers.Insert(Index, Layer);
         }
@@ -148,11 +150,11 @@ namespace Labs
             }
             else return;
         }
-        public void Delete(VectorLayer layer)
+        public void Delete(AbstractLayer layer)
         {
             Layers.Remove(layer);
         }
-        public void AddLayer(VectorLayer Layer)
+        public void AddLayer(AbstractLayer Layer)
         {
             Layers.Add(Layer);
             if (LayerControl != null)
@@ -172,9 +174,9 @@ namespace Labs
             }
         }
 
-        private void Map_Paint(object sender, PaintEventArgs e)
+        public void Map_Paint(object sender, PaintEventArgs e)
         {
-            foreach (VectorLayer layer in Layers)
+            foreach (AbstractLayer layer in Layers)
             {
                 if (layer.Visible==true)
                 {

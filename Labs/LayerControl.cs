@@ -7,23 +7,33 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Labs.Layers.Vector;
+using Labs.Layers;
+using Labs.Layers.Grid;
 
 namespace Labs
 {
     public partial class LayerControl : UserControl
-    {
+    {        
+        public MAP Map;
+
+        public AbstractLayer SelectedLayer { get; set; }
+
+        public List<VectorLayer> VectorLayers { get; set; }
+
         public LayerControl()
         {
             InitializeComponent();
+            this.ListView.Click += new System.EventHandler(this.ListView_Click);
+            VectorLayers = new List<VectorLayer>();
         }
-
-        public MAP Map;
 
         public void RefreshList()
         {
             if (Map == null) return;
             ListView.BeginUpdate();
             ListView.Clear();
+            VectorLayers.Clear();
+            SelectedLayer = null;
             foreach (var layer in Map.Layers)
             {
                 if (layer.Name == null)
@@ -33,6 +43,14 @@ namespace Labs
                 ListViewItem item = ListView.Items.Insert(0, layer.Name);
                 item.Checked = layer.Visible;
                 item.Tag = layer;
+                if (layer.Visible && layer is VectorLayer && layer.Name != "<Noname>")
+                {
+                    bool containsItem = VectorLayers.Any(existingLayer => existingLayer.Name == layer.Name);
+                    if (!containsItem)
+                    {
+                        VectorLayers.Add((VectorLayer)layer);
+                    }                    
+                }
             }
             ListView.EndUpdate();
         }
@@ -41,10 +59,10 @@ namespace Labs
         public void SinListWithMap()
         {
             if (Map == null) return;
-            List<VectorLayer> temp = new List<VectorLayer>();
+            List<AbstractLayer> temp = new List<AbstractLayer>();
             for (int i = ListView.Items.Count-1; i >= 0; i--)
             {
-                temp.Add(ListView.Items[i].Tag as VectorLayer);
+                temp.Add(ListView.Items[i].Tag as AbstractLayer);
             }
             Map.Layers = temp;
             Map.Refresh();
@@ -53,11 +71,26 @@ namespace Labs
         private void ListView_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
             if (Map == null) return;
-            var layer = (e.Item.Tag) as VectorLayer;
+            var layer = (e.Item.Tag) as AbstractLayer;
             if (layer == null) return;    
             layer.Visible = e.Item.Checked;
             RefreshList();
         }
+
+        private void ListView_Click(object sender, EventArgs e)
+        {
+            if(ListView.SelectedItems.Count != 0)
+            {
+                var selectedItem = ListView.SelectedItems[0];
+                foreach (var layer in Map.Layers)
+                {
+                    if (layer.Name == selectedItem.Text)
+                    {
+                        SelectedLayer = layer;
+                    }
+                }
+            }            
+        }        
 
         private void ListView_DragOver(object sender, DragEventArgs e)
         {

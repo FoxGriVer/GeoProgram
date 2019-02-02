@@ -23,9 +23,9 @@ namespace Labs.Styles
         public SymbolStyle()
         {
             Name = "Wingdings";
-            Size = 12;
-            Number = 0x7B;
-            SColour = System.Drawing.Color.Pink;
+            Size = 10;
+            Number = 0x6C;
+            SColour = System.Drawing.Color.Black;
         }
         
     }

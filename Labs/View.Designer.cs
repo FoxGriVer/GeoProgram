@@ -37,6 +37,8 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
             this.CDialogPoint = new System.Windows.Forms.ColorDialog();
             this.CDialogLine = new System.Windows.Forms.ColorDialog();
             this.CDialogPolygon = new System.Windows.Forms.ColorDialog();
@@ -46,6 +48,7 @@
             this.Add = new System.Windows.Forms.Button();
             this.LayerControl = new Labs.LayerControl();
             this.PanelChooseStyle = new System.Windows.Forms.Panel();
+            this.ShowBitmap = new System.Windows.Forms.Button();
             this.ChooseBorderButton = new System.Windows.Forms.Button();
             this.BorderStyleLabel = new System.Windows.Forms.Label();
             this.MaskSymbolFont = new System.Windows.Forms.ComboBox();
@@ -69,7 +72,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.PanelLayersVisibility = new System.Windows.Forms.Panel();
-            this.OpenMifDialog = new System.Windows.Forms.OpenFileDialog();
+            this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.BorderCDialog = new System.Windows.Forms.ColorDialog();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -96,7 +99,9 @@
             this.toolStripButton4,
             this.toolStripSeparator1,
             this.toolStripButton5,
-            this.toolStripSeparator2});
+            this.toolStripSeparator2,
+            this.toolStripButton6,
+            this.toolStripButton7});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -179,6 +184,26 @@
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 39);
             // 
+            // toolStripButton6
+            // 
+            this.toolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton6.Image = global::Labs.Properties.Resources._220px_Lagrange_polynomial_svg__1__0;
+            this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton6.Name = "toolStripButton6";
+            this.toolStripButton6.Size = new System.Drawing.Size(36, 36);
+            this.toolStripButton6.Text = "toolStripButton6";
+            this.toolStripButton6.ToolTipText = "Интерполировать";
+            this.toolStripButton6.Click += new System.EventHandler(this.toolStripButton6_Click);
+            // 
+            // toolStripButton7
+            // 
+            this.toolStripButton7.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton7.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton7.Image")));
+            this.toolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton7.Name = "toolStripButton7";
+            this.toolStripButton7.Size = new System.Drawing.Size(36, 36);
+            this.toolStripButton7.Text = "toolStripButton7";
+            // 
             // CDialogPoint
             // 
             this.CDialogPoint.AnyColor = true;
@@ -198,7 +223,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 39);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(6);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -208,7 +233,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1654, 708);
+            this.splitContainer1.Size = new System.Drawing.Size(1654, 1486);
             this.splitContainer1.SplitterDistance = 968;
             this.splitContainer1.SplitterWidth = 8;
             this.splitContainer1.TabIndex = 7;
@@ -220,16 +245,16 @@
             this.map.Dock = System.Windows.Forms.DockStyle.Fill;
             this.map.Location = new System.Drawing.Point(0, 0);
             this.map.MapScale = 1D;
-            this.map.Margin = new System.Windows.Forms.Padding(12, 12, 12, 12);
+            this.map.Margin = new System.Windows.Forms.Padding(12);
             this.map.Name = "map";
-            this.map.Size = new System.Drawing.Size(968, 708);
+            this.map.Size = new System.Drawing.Size(968, 1486);
             this.map.TabIndex = 2;
             // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(6);
             this.splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
@@ -240,7 +265,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.PanelChooseStyle);
-            this.splitContainer2.Size = new System.Drawing.Size(678, 708);
+            this.splitContainer2.Size = new System.Drawing.Size(678, 1486);
             this.splitContainer2.SplitterDistance = 182;
             this.splitContainer2.SplitterWidth = 8;
             this.splitContainer2.TabIndex = 3;
@@ -248,8 +273,8 @@
             // Add
             // 
             this.Add.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.Add.Location = new System.Drawing.Point(0, 646);
-            this.Add.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Add.Location = new System.Drawing.Point(0, 1424);
+            this.Add.Margin = new System.Windows.Forms.Padding(6);
             this.Add.Name = "Add";
             this.Add.Size = new System.Drawing.Size(182, 62);
             this.Add.TabIndex = 22;
@@ -261,14 +286,16 @@
             // 
             this.LayerControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LayerControl.Location = new System.Drawing.Point(0, 0);
-            this.LayerControl.Margin = new System.Windows.Forms.Padding(12, 12, 12, 12);
+            this.LayerControl.Margin = new System.Windows.Forms.Padding(12);
             this.LayerControl.Name = "LayerControl";
-            this.LayerControl.Size = new System.Drawing.Size(182, 708);
+            this.LayerControl.SelectedLayer = null;
+            this.LayerControl.Size = new System.Drawing.Size(182, 1486);
             this.LayerControl.TabIndex = 4;
             // 
             // PanelChooseStyle
             // 
             this.PanelChooseStyle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.PanelChooseStyle.Controls.Add(this.ShowBitmap);
             this.PanelChooseStyle.Controls.Add(this.ChooseBorderButton);
             this.PanelChooseStyle.Controls.Add(this.BorderStyleLabel);
             this.PanelChooseStyle.Controls.Add(this.MaskSymbolFont);
@@ -291,17 +318,27 @@
             this.PanelChooseStyle.Controls.Add(this.label1);
             this.PanelChooseStyle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PanelChooseStyle.Location = new System.Drawing.Point(0, 0);
-            this.PanelChooseStyle.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.PanelChooseStyle.Margin = new System.Windows.Forms.Padding(6);
             this.PanelChooseStyle.Name = "PanelChooseStyle";
-            this.PanelChooseStyle.Size = new System.Drawing.Size(488, 708);
+            this.PanelChooseStyle.Size = new System.Drawing.Size(488, 1486);
             this.PanelChooseStyle.TabIndex = 6;
+            // 
+            // ShowBitmap
+            // 
+            this.ShowBitmap.Location = new System.Drawing.Point(86, 625);
+            this.ShowBitmap.Name = "ShowBitmap";
+            this.ShowBitmap.Size = new System.Drawing.Size(230, 62);
+            this.ShowBitmap.TabIndex = 27;
+            this.ShowBitmap.Text = "Интерполировать";
+            this.ShowBitmap.UseVisualStyleBackColor = true;
+            this.ShowBitmap.Click += new System.EventHandler(this.ShowBitmap_Click);
             // 
             // ChooseBorderButton
             // 
             this.ChooseBorderButton.BackColor = System.Drawing.Color.Black;
             this.ChooseBorderButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ChooseBorderButton.Location = new System.Drawing.Point(148, 487);
-            this.ChooseBorderButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.ChooseBorderButton.Margin = new System.Windows.Forms.Padding(6);
             this.ChooseBorderButton.Name = "ChooseBorderButton";
             this.ChooseBorderButton.Size = new System.Drawing.Size(206, 33);
             this.ChooseBorderButton.TabIndex = 26;
@@ -326,7 +363,7 @@
             "Webdings",
             "Arial"});
             this.MaskSymbolFont.Location = new System.Drawing.Point(148, 62);
-            this.MaskSymbolFont.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.MaskSymbolFont.Margin = new System.Windows.Forms.Padding(6);
             this.MaskSymbolFont.Name = "MaskSymbolFont";
             this.MaskSymbolFont.Size = new System.Drawing.Size(200, 33);
             this.MaskSymbolFont.TabIndex = 24;
@@ -340,7 +377,7 @@
             this.MaskSymbolNumber.FormattingEnabled = true;
             this.MaskSymbolNumber.ItemHeight = 20;
             this.MaskSymbolNumber.Location = new System.Drawing.Point(148, 165);
-            this.MaskSymbolNumber.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.MaskSymbolNumber.Margin = new System.Windows.Forms.Padding(6);
             this.MaskSymbolNumber.Name = "MaskSymbolNumber";
             this.MaskSymbolNumber.Size = new System.Drawing.Size(200, 26);
             this.MaskSymbolNumber.TabIndex = 23;
@@ -370,7 +407,7 @@
             "48",
             "72"});
             this.MaskSymbolSize.Location = new System.Drawing.Point(148, 113);
-            this.MaskSymbolSize.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.MaskSymbolSize.Margin = new System.Windows.Forms.Padding(6);
             this.MaskSymbolSize.Name = "MaskSymbolSize";
             this.MaskSymbolSize.Size = new System.Drawing.Size(202, 33);
             this.MaskSymbolSize.TabIndex = 22;
@@ -390,7 +427,7 @@
             "8",
             "9"});
             this.MaskLineWidth.Location = new System.Drawing.Point(148, 294);
-            this.MaskLineWidth.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.MaskLineWidth.Margin = new System.Windows.Forms.Padding(6);
             this.MaskLineWidth.Name = "MaskLineWidth";
             this.MaskLineWidth.Size = new System.Drawing.Size(202, 33);
             this.MaskLineWidth.TabIndex = 21;
@@ -401,7 +438,7 @@
             this.ChooseButtonPolygon.BackColor = System.Drawing.Color.Black;
             this.ChooseButtonPolygon.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ChooseButtonPolygon.Location = new System.Drawing.Point(148, 433);
-            this.ChooseButtonPolygon.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.ChooseButtonPolygon.Margin = new System.Windows.Forms.Padding(6);
             this.ChooseButtonPolygon.Name = "ChooseButtonPolygon";
             this.ChooseButtonPolygon.Size = new System.Drawing.Size(206, 33);
             this.ChooseButtonPolygon.TabIndex = 20;
@@ -413,7 +450,7 @@
             this.ChooseButtonLine.BackColor = System.Drawing.Color.Black;
             this.ChooseButtonLine.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ChooseButtonLine.Location = new System.Drawing.Point(148, 346);
-            this.ChooseButtonLine.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.ChooseButtonLine.Margin = new System.Windows.Forms.Padding(6);
             this.ChooseButtonLine.Name = "ChooseButtonLine";
             this.ChooseButtonLine.Size = new System.Drawing.Size(206, 33);
             this.ChooseButtonLine.TabIndex = 19;
@@ -425,7 +462,7 @@
             this.ChooseButtonPoint.BackColor = System.Drawing.Color.Black;
             this.ChooseButtonPoint.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ChooseButtonPoint.Location = new System.Drawing.Point(148, 225);
-            this.ChooseButtonPoint.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.ChooseButtonPoint.Margin = new System.Windows.Forms.Padding(6);
             this.ChooseButtonPoint.Name = "ChooseButtonPoint";
             this.ChooseButtonPoint.Size = new System.Drawing.Size(206, 33);
             this.ChooseButtonPoint.TabIndex = 18;
@@ -434,8 +471,8 @@
             // 
             // OK_Button
             // 
-            this.OK_Button.Location = new System.Drawing.Point(28, 554);
-            this.OK_Button.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.OK_Button.Location = new System.Drawing.Point(86, 554);
+            this.OK_Button.Margin = new System.Windows.Forms.Padding(6);
             this.OK_Button.Name = "OK_Button";
             this.OK_Button.Size = new System.Drawing.Size(232, 62);
             this.OK_Button.TabIndex = 6;
@@ -575,17 +612,17 @@
             this.PanelLayersVisibility.Controls.Add(this.label12);
             this.PanelLayersVisibility.Controls.Add(this.label11);
             this.PanelLayersVisibility.Location = new System.Drawing.Point(1270, 54);
-            this.PanelLayersVisibility.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.PanelLayersVisibility.Margin = new System.Windows.Forms.Padding(6);
             this.PanelLayersVisibility.Name = "PanelLayersVisibility";
             this.PanelLayersVisibility.Size = new System.Drawing.Size(384, 569);
             this.PanelLayersVisibility.TabIndex = 6;
             // 
-            // OpenMifDialog
+            // OpenFileDialog
             // 
-            this.OpenMifDialog.FileName = "NewFile";
-            this.OpenMifDialog.Filter = "Все файлы|*.mif;*.txt;*.grd|Layers (*.mif)|*.mif|grd files (*.grd)|*.grd|Geopoint" +
+            this.OpenFileDialog.FileName = "NewFile";
+            this.OpenFileDialog.Filter = "Все файлы|*.mif;*.txt;*.grd|Layers (*.mif)|*.mif|grd files (*.grd)|*.grd|Geopoint" +
     "s file (*.txt)|*.txt";
-            this.OpenMifDialog.Title = "Добавить слой";
+            this.OpenFileDialog.Title = "Добавить слой";
             // 
             // View
             // 
@@ -593,11 +630,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1284, 781);
+            this.ClientSize = new System.Drawing.Size(1522, 1559);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.PanelLayersVisibility);
             this.Controls.Add(this.toolStrip1);
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.DoubleBuffered = true;
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "View";
             this.Text = "MiniGIS";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -656,7 +694,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Panel PanelLayersVisibility;
-        private System.Windows.Forms.OpenFileDialog OpenMifDialog;
+        private System.Windows.Forms.OpenFileDialog OpenFileDialog;
         private System.Windows.Forms.Button Add;
         private System.Windows.Forms.ComboBox MaskLineWidth;
         private System.Windows.Forms.ComboBox MaskSymbolSize;
@@ -665,6 +703,9 @@
         private System.Windows.Forms.Button ChooseBorderButton;
         private System.Windows.Forms.Label BorderStyleLabel;
         private System.Windows.Forms.ColorDialog BorderCDialog;
+        private System.Windows.Forms.Button ShowBitmap;
+        private System.Windows.Forms.ToolStripButton toolStripButton6;
+        private System.Windows.Forms.ToolStripButton toolStripButton7;
     }
 }
 

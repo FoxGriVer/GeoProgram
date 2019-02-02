@@ -1,4 +1,5 @@
 ﻿using Labs.Layers.Vector;
+using Labs.Layers.Grid;
 using Labs.MapTypes;
 using System;
 using System.Collections.Generic;
@@ -18,15 +19,17 @@ namespace Labs
 
         public List<string> CharList = new List<string>();
 
+        //private GridLayer gridLayer;
+
         public View()
         {
-            InitializeComponent();
+            InitializeComponent();            
             toolStripButton1.Checked = true;
             toolStripButton2.Checked = false; 
             toolStripButton3.Checked = false;
             toolStripButton4.Checked = false;
             map.ActiveTool = MapToolType.select;
-            LayerControl.Map = map;
+            LayerControl.Map = map;            
             map.LayerControl = LayerControl;
             for (int i = 33; i < 256; i++)
             {
@@ -34,7 +37,7 @@ namespace Labs
             }
             MaskSymbolNumber.DataSource = CharList;
         }
-
+  
         private void View_SizeChanged(object sender, EventArgs e)
         {
             map.Refresh();
@@ -126,10 +129,10 @@ namespace Labs
 
         private void Add_Click(object sender, EventArgs e)
         {
-            OpenMifDialog.Filter = "All formats|*.mif;*.txt;*.grd|Layers (*.mif)|*.mif|Grid files (*.grd)|*.grd|Geopoints file (*.txt)|*.txt";
-            if (OpenMifDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            OpenFileDialog.Filter = "All formats|*.mif;*.txt;*.grd|Layers (*.mif)|*.mif|Grid files (*.grd)|*.grd|Geopoints file (*.txt)|*.txt";
+            if (OpenFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                if (OpenMifDialog.FileName != null)
+                if (OpenFileDialog.FileName != null)
                 {
                     try
                     {                        
@@ -137,16 +140,34 @@ namespace Labs
                         bool isExistName = true;
                         for (int i = 0; i < map.LayersCount; i++)
                         {
-                            if (map.Layers[i].Name == System.IO.Path.GetFileNameWithoutExtension(OpenMifDialog.FileName))
+                            if (map.Layers[i].Name == System.IO.Path.GetFileNameWithoutExtension(OpenFileDialog.FileName))
                             {
                                 isExistName = false;
                             }
                         }
                         if (isExistName)
                         {
-                            VectorLayer MifLayer = new VectorLayer();
-                            map.AddLayer(MifLayer);
-                            MifLayer.LoadFromFile(OpenMifDialog.FileName);
+                            if(Path.GetExtension(OpenFileDialog.FileName) == ".mif")
+                            {
+                                VectorLayer MifLayer = new VectorLayer();
+                                map.AddLayer(MifLayer);
+                                MifLayer.LoadFromFile(OpenFileDialog.FileName);
+                                //map.ZoomToAll();
+                                //map.Refresh();
+                                //LayerControl.RefreshList();
+                            }
+                            if (Path.GetExtension(OpenFileDialog.FileName) == ".txt")
+                            {
+                                VectorLayer vectorLayer = new VectorLayer();
+                                map.AddLayer(vectorLayer);
+                                vectorLayer.LoadFromFile(OpenFileDialog.FileName);
+                            }
+                            if (Path.GetExtension(OpenFileDialog.FileName) == ".grd")
+                            {
+                                GridLayer gridLayer = new GridLayer(new GridGeometry(), map);
+                                map.AddLayer(gridLayer);
+                                gridLayer.LoadFromFile(OpenFileDialog.FileName);
+                            }
                             map.ZoomToAll();
                             map.Refresh();
                             LayerControl.RefreshList();
@@ -188,6 +209,26 @@ namespace Labs
             MaskSymbolNumber.Font = new System.Drawing.Font(MaskSymbolFont.Text, 16);
         }
 
+        private void ShowBitmap_Click(object sender, EventArgs e)
+        {
+            
+        }
 
+        private void toolStripButton6_Click(object sender, EventArgs e)
+        {            
+            if(map.LayerControl.SelectedLayer != null)
+            {
+                GridInterpolationModalForm interpolationForm = new GridInterpolationModalForm(map.LayerControl.VectorLayers,
+                    map.LayerControl.SelectedLayer);
+                if (interpolationForm.SelectedLayer != null)
+                {
+                    interpolationForm.Show();
+                }
+            }        
+            else
+            {
+                MessageBox.Show("Необходимо выбрать слой !");
+            }
+        }
     }
 }

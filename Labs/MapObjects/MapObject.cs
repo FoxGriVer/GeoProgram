@@ -1,6 +1,7 @@
 ﻿using Labs.Layers.Vector;
 using Labs.MapObjects.Shapes;
 using Labs.MapTypes;
+using Labs.Layers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Labs.MapObjects
 {
     public abstract class MapObject
     {
-        public VectorLayer layer;
+        public AbstractLayer layer;
         protected MapObjectType ObjectType;
         public bool selected;
 

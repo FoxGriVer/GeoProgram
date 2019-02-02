@@ -12,25 +12,10 @@ namespace Labs.Layers.Vector
 {
     public class VectorLayer: AbstractLayer
     {
-        public List<MapObject> Objects;
-
         public VectorLayer()
         {
-            Objects = new List<MapObject>();
-            visible = true;
-        }
-
-        public void Split(List<string> list)
-        {
-            for (int j = 0; j < list.Count(); j++)
-            {
-                if (list[j] == "")
-                {
-                    list.RemoveAt(j);
-                    j--;
-                }
-            }
-        }
+            
+        }        
 
         public override void LoadFromFile(string filename)
         {
@@ -59,32 +44,19 @@ namespace Labs.Layers.Vector
                 SeparatorArray = (DataStrings[i].Split(SeparatorSymbolsCoord)).ToList();
                 Split(SeparatorArray);
 
-                double x, y;
+                double x, y, z;
                 if (SeparatorArray.Count > 0)
                 {
                     switch (SeparatorArray[0])
                     {
 
                         case "point":
+                            ConvertPointInCorrectFormat(SeparatorArray);
                             x = double.Parse(SeparatorArray[1].Replace('.', ','));
                             y = double.Parse(SeparatorArray[2].Replace('.', ','));
-                            Point point = new Point(x, y);
-
-                            if ((i + 1) < DataStrings.Count)
-                            {
-                                SeparatorArray = (DataStrings[i + 1].Split(SeparatorSymbols)).ToList();
-                                Split(SeparatorArray);
-                                if (SeparatorArray[0] == "symbol")
-                                {
-                                    i++;
-                                    point.Style.Number = byte.Parse(SeparatorArray[1]);
-                                    int Colour = int.Parse(SeparatorArray[2]);
-                                    point.Style.SColour = System.Drawing.Color.FromArgb((Colour & 0xFF0000) / 65536,
-                                                                                        (Colour & 0xFF00) / 256,
-                                                                                        (Colour & 0xFF));
-                                    point.Style.Size = int.Parse(SeparatorArray[3]);
-                                }
-                            }
+                            z = double.Parse(SeparatorArray[3].Replace('.', ','));
+                            Point point = new Point(x, y, z);
+                            CountHeightAndConvert(point);                            
 
                             AddObject(point);
                             break;
@@ -240,13 +212,49 @@ namespace Labs.Layers.Vector
             else return;
         }
 
-        public void AddObject(MapObject Object)
+        private void CountHeightAndConvert(Point point)
+        {
+            double zMin = -1000;
+            double zMax = 1000;
+
+            int minFont = 4;
+            int maxFont = 16;
+            int font = 0;
+            double coefficient;
+
+            if (zMin < 0)
+            {
+                double middleZ = (Math.Abs(zMin) + zMax) / 2;
+                coefficient = (point.location.z + middleZ) / (Math.Abs(zMin) + zMax);
+            }
+            else
+            {
+                coefficient = (point.location.z) / (zMin + zMax);
+            }
+            font = (int)((minFont + maxFont) * coefficient);
+
+            point.Style.Size = font;
+        }
+
+        internal override void AddObject(MapObject Object)
         {
             bounds = GeoRect.Union(bounds, Object.Bounds);
             Objects.Add(Object);
             Object.layer = this;
         }
-        
+
+        internal override void Split(List<string> list)
+        {
+            for (int j = 0; j < list.Count(); j++)
+            {
+                if (list[j] == "")
+                {
+                    list.RemoveAt(j);
+                    j--;
+                }
+            }
+        }
+
         public int ObjectsCount
         {
             get
@@ -255,6 +263,13 @@ namespace Labs.Layers.Vector
             }
         }
 
+        private void ConvertPointInCorrectFormat(List<string> list)
+        {
+            for (int j = 0; j < list.Count(); j++)
+            {
+                list[j] = list[j].TrimEnd(new Char[] { ',', ';' });
+            }
+        }
 
         public override void Draw(System.Windows.Forms.PaintEventArgs e)
         {
@@ -263,38 +278,6 @@ namespace Labs.Layers.Vector
                 obj.Draw(e); 
             }
         }
-
-        public MapObject FindObject(GeoRect SelectPoint)
-        {
-            MapObject result = null;
-            if (visible)
-            {
-                for (int i = Objects.Count - 1; i >= 0; i--)
-                {
-                    result = Objects[i];
-                    if (result.isCross(SelectPoint))
-                    {
-                        return result;
-                    }
-                }
-            }
-            return null;
-        }
-
-        internal void ChangeStyleFunction(string FontName, int PointSize,
-            int PointNumber, System.Drawing.Color PointColor,
-            int LineWidth, System.Drawing.Color LineColour,
-            System.Drawing.Color PolygonColour, System.Drawing.Color BorderColor)
-        {
-            for (int i = Objects.Count - 1; i >= 0; i--)
-            {
-                if (Objects[i].selected)
-                {
-                    Objects[i].ChangeStyleFunction(FontName, PointSize, PointNumber, PointColor,
-                                                   LineWidth, LineColour, PolygonColour, BorderColor);
-                }
-
-            }
-        }
+        
     }
 }
