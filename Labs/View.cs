@@ -15,11 +15,8 @@ namespace Labs
 {
     
     public partial class View : Form
-    {
-
-        public List<string> CharList = new List<string>();
-
-        //private GridLayer gridLayer;
+    {    
+        public List<string> CharList = new List<string>();        
 
         public View()
         {
@@ -151,10 +148,7 @@ namespace Labs
                             {
                                 VectorLayer MifLayer = new VectorLayer();
                                 map.AddLayer(MifLayer);
-                                MifLayer.LoadFromFile(OpenFileDialog.FileName);
-                                //map.ZoomToAll();
-                                //map.Refresh();
-                                //LayerControl.RefreshList();
+                                MifLayer.LoadFromFile(OpenFileDialog.FileName);                                
                             }
                             if (Path.GetExtension(OpenFileDialog.FileName) == ".txt")
                             {
@@ -216,18 +210,27 @@ namespace Labs
 
         private void toolStripButton6_Click(object sender, EventArgs e)
         {            
-            if(map.LayerControl.SelectedLayer != null)
-            {
-                GridInterpolationModalForm interpolationForm = new GridInterpolationModalForm(map.LayerControl.VectorLayers,
-                    map.LayerControl.SelectedLayer);
-                if (interpolationForm.SelectedLayer != null)
+            if(map.LayerControl.SelectedLayer != null 
+                && map.LayerControl.SelectedLayer is VectorLayer 
+                && map.LayerControl.SelectedLayer.Visible)
+            {                
+                VectorLayer vectorLayer = (VectorLayer)map.LayerControl.SelectedLayer;
+                GridGeometry gridGeometry = null;
+                GridInterpolationModalForm interpolationForm = new GridInterpolationModalForm();
+                
+                interpolationForm.InitializeForm(map.LayerControl.VectorLayers, ref vectorLayer, ref gridGeometry);
+                if(interpolationForm.DialogResult == DialogResult.OK)
                 {
-                    interpolationForm.Show();
+                    GridLayer gridLayer = new GridLayer(gridGeometry, map);
+                    map.AddLayer(gridLayer);
+                }
+                else
+                {                    
                 }
             }        
             else
             {
-                MessageBox.Show("Необходимо выбрать слой !");
+                MessageBox.Show("Необходимо выбрать векторный слой !");
             }
         }
     }

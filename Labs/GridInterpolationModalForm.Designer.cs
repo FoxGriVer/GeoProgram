@@ -64,6 +64,7 @@
             // 
             // OkButton
             // 
+            this.OkButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.OkButton.Location = new System.Drawing.Point(107, 412);
             this.OkButton.Name = "OkButton";
             this.OkButton.Size = new System.Drawing.Size(189, 56);
@@ -74,6 +75,7 @@
             // 
             // CancelInterpolationButton
             // 
+            this.CancelInterpolationButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.CancelInterpolationButton.Location = new System.Drawing.Point(309, 412);
             this.CancelInterpolationButton.Name = "CancelInterpolationButton";
             this.CancelInterpolationButton.Size = new System.Drawing.Size(189, 56);

@@ -22,7 +22,7 @@ namespace Labs
             {
                 return selectedLayer;
             }
-            private set
+            set
             {
                 if (value is VectorLayer)
                 {
@@ -37,6 +37,8 @@ namespace Labs
             }
         }
 
+        private List<VectorLayer> rangeOfVectorLayers;
+
         private double dx;
         private double dy;
         private double selectedCell
@@ -48,16 +50,10 @@ namespace Labs
         private GridGeometry selectedGeometry
         {
             get
-            {
-                GeoRect bounds = null;
-                if (VectorLayersListComboBox.SelectedIndex == 0)
-                {
-                    bounds = new GeoRect(SelectedLayer.Bounds.Xmin, SelectedLayer.Bounds.Xmax, 
-                        SelectedLayer.Bounds.Ymin, SelectedLayer.Bounds.Ymax);                    
-                }
-                else
-                {
-                }
+            {                
+                SelectedLayer = rangeOfVectorLayers[VectorLayersListComboBox.SelectedIndex];
+                GeoRect bounds = new GeoRect(SelectedLayer.Bounds.Xmin, SelectedLayer.Bounds.Xmax,
+                    SelectedLayer.Bounds.Ymin, SelectedLayer.Bounds.Ymax);
 
                 GridGeometry gridGeometry = new GridGeometry();
                 gridGeometry.XMin = bounds.Xmin;
@@ -69,7 +65,7 @@ namespace Labs
                 gridGeometry.CountX = (int)(dx / selectedCell + 1);
                 gridGeometry.CountY = (int)(dy / selectedCell + 1);
 
-                return gridGeometry;
+                return gridGeometry;                              
             }
             set
             {
@@ -157,9 +153,11 @@ namespace Labs
         public GridInterpolationModalForm()
         {
             InitializeComponent();
+            this.AcceptButton = OkButton;
+            this.CancelButton = CancelButton;
         }
 
-        public GridInterpolationModalForm(List<VectorLayer> vectorLayers, AbstractLayer selectedLayer, GridGeometry gridGeometry = null)
+        public GridInterpolationModalForm(List<VectorLayer> vectorLayers, AbstractLayer selectedLayer)
         {
             InitializeComponent();
 
@@ -175,7 +173,7 @@ namespace Labs
             VectorLayersListComboBox.ValueMember = "Name";
 
             SelectedLayer = selectedLayer;
-            selectedGeometry = gridGeometry;
+            //selectedGeometry = gridGeometry;
 
             GetDefaultGeometry();
 
@@ -186,6 +184,51 @@ namespace Labs
             numericUpDownGridStep.ValueChanged += UpdateGeometry;
             numericUpDownX.ValueChanged += UpdateXStepGeometry;
             numericUpDownY.ValueChanged += UpdateYStepGeometry;
+            
+        }
+
+        public void InitializeForm(List<VectorLayer> vectorLayers, ref VectorLayer selectedLayer,
+            ref GridGeometry gridGeometry)
+        {
+            TypeGeometryComboBox.SelectedIndexChanged -= UpdateGeometry;
+            VectorLayersListComboBox.SelectedIndexChanged -= UpdateGeometry;
+            numericUpDownGridStep.ValueChanged -= UpdateGeometry;
+            numericUpDownX.ValueChanged -= UpdateXStepGeometry;
+            numericUpDownY.ValueChanged -= UpdateYStepGeometry;
+
+            rangeOfVectorLayers = new List<VectorLayer>(vectorLayers);
+
+            VectorLayersListComboBox.DataSource = null;
+            VectorLayersListComboBox.Items.Clear();
+            VectorLayersListComboBox.DataSource = vectorLayers;
+            VectorLayersListComboBox.DisplayMember = "Name";
+            VectorLayersListComboBox.ValueMember = "Name";
+
+            SelectedLayer = selectedLayer;
+            //selectedGeometry = gridGeometry;
+
+            GetDefaultGeometry();
+
+            UpdateGeometry(new object(), new EventArgs());
+
+            TypeGeometryComboBox.SelectedIndexChanged += UpdateGeometry;
+            VectorLayersListComboBox.SelectedIndexChanged += UpdateGeometry;
+            numericUpDownGridStep.ValueChanged += UpdateGeometry;
+            numericUpDownX.ValueChanged += UpdateXStepGeometry;
+            numericUpDownY.ValueChanged += UpdateYStepGeometry;
+
+            //if (ShowDialog() == DialogResult.Cancel)
+            //{
+            //    return false;
+            //}
+
+            gridGeometry = selectedGeometry;
+
+            ShowDialog();
+            this.Close();
+            
+
+            //return true;
         }
 
         private void GetDefaultGeometry()
@@ -263,13 +306,12 @@ namespace Labs
 
         private void OkButton_Click(object sender, EventArgs e)
         {
-            this.Close();
-        }        
+        }
 
         private void CancelInterpolationButton_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-        
+
     }
 }

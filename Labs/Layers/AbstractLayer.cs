@@ -33,6 +33,10 @@ namespace Labs.Layers
             {
                 return bounds;
             }
+            set
+            {
+                bounds = value;
+            }
         }
 
         internal MAP map;
