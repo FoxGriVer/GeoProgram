@@ -10,13 +10,19 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Labs.Layers;
+using Labs.MapObjects;
+using Labs.MapObjects.Points;
+using Microsoft.VisualBasic;
 
 namespace Labs
 {
     
     public partial class View : Form
     {    
-        public List<string> CharList = new List<string>();        
+        public List<string> CharList = new List<string>();
+
+        private AbstractLayer selectedLayer { get; set; }
 
         public View()
         {
@@ -209,8 +215,11 @@ namespace Labs
         }
 
         private void toolStripButton6_Click(object sender, EventArgs e)
-        {            
-            if(map.LayerControl.SelectedLayer != null 
+        {
+            double searchRadius = 1;
+            int power = 1;
+
+            if (map.LayerControl.SelectedLayer != null 
                 && map.LayerControl.SelectedLayer is VectorLayer 
                 && map.LayerControl.SelectedLayer.Visible)
             {                
@@ -218,20 +227,104 @@ namespace Labs
                 GridGeometry gridGeometry = null;
                 GridInterpolationModalForm interpolationForm = new GridInterpolationModalForm();
                 
-                interpolationForm.InitializeForm(map.LayerControl.VectorLayers, ref vectorLayer, ref gridGeometry);
+                interpolationForm.InitializeForm(map.LayerControl.VectorLayers, ref vectorLayer, ref gridGeometry, ref searchRadius, ref power);
                 if(interpolationForm.DialogResult == DialogResult.OK)
                 {
                     GridLayer gridLayer = new GridLayer(gridGeometry, map);
+                    foreach(var layer in map.Layers)
+                    {
+                        if(layer.Name == gridLayer.Name)
+                        {
+                            gridLayer.Name = Interaction.InputBox("Grid для данного слоя уже существует. Введите уникальное название для нового слоя.", "Название слоя", vectorLayer.Name) + ".grd";
+                        }
+                        else
+                        {
+                            gridLayer.Name = vectorLayer.Name + ".grd";
+                        }
+                    }
                     map.AddLayer(gridLayer);
+                    List<GeoPoint> points = new List<GeoPoint>();
+
+                    gridLayer.ColorMin = MinStripButton.BackColor;
+                    gridLayer.ColorMax = MaxStripButton.BackColor;
+
+                    points = GetPoints(vectorLayer);
+
+                    if (points.Count == 0)
+                    {
+                        MessageBox.Show("Количество точек равно 0");
+                    }
+                    else
+                    {
+                        selectedLayer = gridLayer;
+                        gridLayer.DoInterpolation(points, searchRadius, power);
+                        ShowColors();
+                    }
                 }
                 else
                 {                    
                 }
-            }        
+                map.Refresh();
+            }
             else
             {
                 MessageBox.Show("Необходимо выбрать векторный слой !");
             }
         }
+
+        private List<GeoPoint> GetPoints(AbstractLayer layer)
+        {
+            List<GeoPoint> points = new List<GeoPoint>();            
+
+            foreach (MapObject m in layer.Objects)
+            {
+                if (m is Labs.MapObjects.Points.Point)
+                {
+                    var p = (Labs.MapObjects.Points.Point)m;
+                    points.Add(new GeoPoint(p.location.x, p.location.y, p.location.z));
+                }
+            }
+
+            return points;
+        }
+
+        private void ShowColors()
+        {
+            var selectedLayer = map.LayerControl.SelectedLayer;
+            if (selectedLayer != null
+                && selectedLayer is GridLayer
+                && selectedLayer.Visible)
+            {
+                (selectedLayer as GridLayer).ColorMin = MinStripButton.BackColor;
+                (selectedLayer as GridLayer).ColorMax = MaxStripButton.BackColor;                
+            }
+            else
+            {
+                MinStripButton.BackColor = Color.Black;
+                MaxStripButton.BackColor = Color.White;
+            }
+            MinStripButton.Invalidate();
+            MaxStripButton.Invalidate();
+        }
+
+        private void ChangeColor(object sender, EventArgs e)
+        {
+            var PB = sender as Button;
+            ColorDialog colorDialog = new ColorDialog();
+            int[] colorRGB = new int[4];
+
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                colorRGB[0] = colorDialog.Color.A;
+                colorRGB[1] = colorDialog.Color.R;
+                colorRGB[2] = colorDialog.Color.G;
+                colorRGB[3] = colorDialog.Color.B;
+                PB.BackColor = Color.FromArgb(colorRGB[0], colorRGB[1], colorRGB[2], colorRGB[3]);
+                PB.Invalidate();
+            }
+            ShowColors();
+            Refresh();
+        }
+
     }
 }

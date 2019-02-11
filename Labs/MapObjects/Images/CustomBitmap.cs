@@ -17,9 +17,9 @@ namespace Labs.MapObjects.Images
         private double Xmin, Ymin, Xmax, Ymax;
 
 
-        public CustomBitmap(Labs.MapObjects.Points.GeoPoint startPoint, int width, int height)
+        public CustomBitmap(Bitmap bitmap, Labs.MapObjects.Points.GeoPoint startPoint, int width, int height)
         {
-            bmp = new Bitmap(width, height);
+            bmp = new Bitmap(bitmap, width, height);
             units = GraphicsUnit.Pixel;
             srcRect = new RectangleF((float)Xmin, (float)Ymin, width, height);
             Xmin = startPoint.x;
@@ -27,21 +27,21 @@ namespace Labs.MapObjects.Images
             Xmax = width;
             Ymax = height;
 
-            Random random = new Random();
+            //Random random = new Random();
 
-            for (int i = 0; i < height; i++)
-            {
-                for (int j = 0; j < width; j++)
-                {
-                    int a = random.Next(256);
-                    int r = random.Next(256);
-                    int g = random.Next(256);
-                    int b = random.Next(256);
+            //for (int i = 0; i < height; i++)
+            //{
+            //    for (int j = 0; j < width; j++)
+            //    {
+            //        int a = random.Next(256);
+            //        int r = random.Next(256);
+            //        int g = random.Next(256);
+            //        int b = random.Next(256);
 
-                    bmp.SetPixel(j, i, Color.FromArgb(a, r, g, b));
-                    //bmp.SetPixel(j, i, Color.Blue);
-                }
-            }
+            //        bmp.SetPixel(j, i, Color.FromArgb(a, r, g, b));
+            //        //bmp.SetPixel(j, i, Color.Blue);
+            //    }
+            //}
         }
 
         protected override GeoRect GetBounds()

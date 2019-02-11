@@ -188,7 +188,7 @@ namespace Labs
         }
 
         public void InitializeForm(List<VectorLayer> vectorLayers, ref VectorLayer selectedLayer,
-            ref GridGeometry gridGeometry)
+            ref GridGeometry gridGeometry, ref double searchRadius, ref int power)
         {
             TypeGeometryComboBox.SelectedIndexChanged -= UpdateGeometry;
             VectorLayersListComboBox.SelectedIndexChanged -= UpdateGeometry;
@@ -204,6 +204,8 @@ namespace Labs
             VectorLayersListComboBox.DisplayMember = "Name";
             VectorLayersListComboBox.ValueMember = "Name";
 
+            selectedSearchRadius = searchRadius;
+            selectedPower = power;
             SelectedLayer = selectedLayer;
             //selectedGeometry = gridGeometry;
 
@@ -221,13 +223,14 @@ namespace Labs
             //{
             //    return false;
             //}
+           
+            ShowDialog();
 
+            power = selectedPower;
+            searchRadius = selectedSearchRadius;
             gridGeometry = selectedGeometry;
 
-            ShowDialog();
-            this.Close();
-            
-
+            this.Close();           
             //return true;
         }
 

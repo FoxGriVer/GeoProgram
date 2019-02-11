@@ -68,9 +68,35 @@ namespace Labs.Layers.Grid
         private Bitmap bitmap;
 
         private double?[,] matrix;
-        
-        private Color ColorMin { get; set; } = Color.White;
-        private Color ColorMax { get; set; } = Color.Black;
+
+        private Color colorMin;
+        public Color ColorMin
+        {
+            get
+            {
+
+                return colorMin;
+            }
+            set
+            {
+                colorMin = value;
+                needRecoloring = true;
+            }
+        }
+        private Color colorMax;
+        public Color ColorMax
+        {
+            get
+            {
+
+                return colorMax;
+            }
+            set
+            {
+                colorMax = value;
+                needRecoloring = true;
+            }
+        }
         private bool needRecoloring;
 
         private double zMin;
@@ -80,7 +106,7 @@ namespace Labs.Layers.Grid
         {
             this.gridGeometry = gridGeometry;
             this.map = map;
-            matrix = new double?[CountX, CountY];
+            matrix = new double?[CountY, CountX];
             needRecoloring = true;
         }
 
@@ -90,16 +116,61 @@ namespace Labs.Layers.Grid
                 bitmap = new Bitmap(CountX - 1, CountY - 1);
             //updateZminZmax(); tak ostabit'
 
-            //if (needRecoloring)
-            //    Recoloring();
+            if (needRecoloring)
+                Recoloring();
 
             //Graphics g = e.Graphics;
             System.Drawing.Point leftTop = map.MapToScreen(new GeoPoint(XMin, YMax));            
             System.Drawing.Point rightBottom = map.MapToScreen(new GeoPoint(XMax, YMin));
             Rectangle rect = new Rectangle(leftTop.X, leftTop.Y, rightBottom.X - leftTop.X, rightBottom.Y - leftTop.Y);
 
-            CustomBitmap bmp = new CustomBitmap(new MapObjects.Points.GeoPoint(rect.X, rect.Y) , rect.Width, rect.Height);
+            CustomBitmap bmp = new CustomBitmap(bitmap, new MapObjects.Points.GeoPoint(rect.X, rect.Y) , rect.Width, rect.Height);
             bmp.Draw(e);            
+        }
+
+        public void DoInterpolation(List<GeoPoint> points, double searchRadius, int power)
+        {
+            double searchRadius2 = searchRadius * searchRadius;
+            for (int i = 0; i < CountY; i++)
+            {
+                for (int j = 0; j < CountX; j++)
+                {
+                    double x = (XMin + Cell * j);
+                    double y = (YMin + Cell * i);
+                    double sum1 = 0;
+                    double sum2 = 0;
+                    bool isFind = false;
+                    foreach (GeoPoint point in points)
+                    {
+                        double r2 = (x - point.x) * (x - point.x) + (y - point.y) * (y - point.y);
+                        if (r2 < double.Epsilon)
+                        {
+                            //Matrix[i, j] = point.Z;
+                            isFind = true;
+                            sum1 = point.z;
+                            sum2 = 1;
+                            break;
+                        }
+                        if (r2 <= searchRadius2)
+                        {
+                            isFind = true;
+                            double rp = Math.Pow(Math.Sqrt(r2), power);
+                            sum1 += point.z / rp;
+                            sum2 += 1 / rp;
+                        }
+                    }
+                    if (isFind)
+                    {
+                        this.matrix[i, j] = sum1 / sum2;
+                    }
+                    else
+                    {
+                        this.matrix[i, j] = null;
+                    }
+                }
+            }
+            updateZminZmax();
+            needRecoloring = true;
         }
 
         private void Recoloring()

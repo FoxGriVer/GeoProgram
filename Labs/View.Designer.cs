@@ -48,6 +48,11 @@
             this.Add = new System.Windows.Forms.Button();
             this.LayerControl = new Labs.LayerControl();
             this.PanelChooseStyle = new System.Windows.Forms.Panel();
+            this.MaxStripButton = new System.Windows.Forms.Button();
+            this.label14 = new System.Windows.Forms.Label();
+            this.MinStripButton = new System.Windows.Forms.Button();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.ShowBitmap = new System.Windows.Forms.Button();
             this.ChooseBorderButton = new System.Windows.Forms.Button();
             this.BorderStyleLabel = new System.Windows.Forms.Label();
@@ -74,6 +79,7 @@
             this.PanelLayersVisibility = new System.Windows.Forms.Panel();
             this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.BorderCDialog = new System.Windows.Forms.ColorDialog();
+            this.button2 = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -295,6 +301,11 @@
             // PanelChooseStyle
             // 
             this.PanelChooseStyle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.PanelChooseStyle.Controls.Add(this.MaxStripButton);
+            this.PanelChooseStyle.Controls.Add(this.label14);
+            this.PanelChooseStyle.Controls.Add(this.MinStripButton);
+            this.PanelChooseStyle.Controls.Add(this.label15);
+            this.PanelChooseStyle.Controls.Add(this.label13);
             this.PanelChooseStyle.Controls.Add(this.ShowBitmap);
             this.PanelChooseStyle.Controls.Add(this.ChooseBorderButton);
             this.PanelChooseStyle.Controls.Add(this.BorderStyleLabel);
@@ -323,9 +334,64 @@
             this.PanelChooseStyle.Size = new System.Drawing.Size(488, 1486);
             this.PanelChooseStyle.TabIndex = 6;
             // 
+            // MaxStripButton
+            // 
+            this.MaxStripButton.BackColor = System.Drawing.Color.White;
+            this.MaxStripButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.MaxStripButton.Location = new System.Drawing.Point(148, 624);
+            this.MaxStripButton.Margin = new System.Windows.Forms.Padding(6);
+            this.MaxStripButton.Name = "MaxStripButton";
+            this.MaxStripButton.Size = new System.Drawing.Size(206, 33);
+            this.MaxStripButton.TabIndex = 32;
+            this.MaxStripButton.UseVisualStyleBackColor = false;
+            this.MaxStripButton.Click += new System.EventHandler(this.ChangeColor);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(6, 624);
+            this.label14.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(116, 25);
+            this.label14.TabIndex = 31;
+            this.label14.Text = "Color Max:";
+            // 
+            // MinStripButton
+            // 
+            this.MinStripButton.BackColor = System.Drawing.Color.Black;
+            this.MinStripButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.MinStripButton.Location = new System.Drawing.Point(148, 570);
+            this.MinStripButton.Margin = new System.Windows.Forms.Padding(6);
+            this.MinStripButton.Name = "MinStripButton";
+            this.MinStripButton.Size = new System.Drawing.Size(206, 33);
+            this.MinStripButton.TabIndex = 30;
+            this.MinStripButton.UseVisualStyleBackColor = false;
+            this.MinStripButton.Click += new System.EventHandler(this.ChangeColor);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 570);
+            this.label15.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(110, 25);
+            this.label15.TabIndex = 29;
+            this.label15.Text = "Color Min:";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.ForeColor = System.Drawing.Color.CornflowerBlue;
+            this.label13.Location = new System.Drawing.Point(81, 539);
+            this.label13.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(227, 25);
+            this.label13.TabIndex = 28;
+            this.label13.Text = "Цветовая гамма Grid:";
+            // 
             // ShowBitmap
             // 
-            this.ShowBitmap.Location = new System.Drawing.Point(86, 625);
+            this.ShowBitmap.Location = new System.Drawing.Point(86, 747);
             this.ShowBitmap.Name = "ShowBitmap";
             this.ShowBitmap.Size = new System.Drawing.Size(230, 62);
             this.ShowBitmap.TabIndex = 27;
@@ -471,7 +537,7 @@
             // 
             // OK_Button
             // 
-            this.OK_Button.Location = new System.Drawing.Point(86, 554);
+            this.OK_Button.Location = new System.Drawing.Point(86, 669);
             this.OK_Button.Margin = new System.Windows.Forms.Padding(6);
             this.OK_Button.Name = "OK_Button";
             this.OK_Button.Size = new System.Drawing.Size(232, 62);
@@ -624,6 +690,18 @@
     "s file (*.txt)|*.txt";
             this.OpenFileDialog.Title = "Добавить слой";
             // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.Black;
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button2.Location = new System.Drawing.Point(148, 570);
+            this.button2.Margin = new System.Windows.Forms.Padding(6);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(206, 33);
+            this.button2.TabIndex = 30;
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.ChangeColor);
+            // 
             // View
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -706,6 +784,12 @@
         private System.Windows.Forms.Button ShowBitmap;
         private System.Windows.Forms.ToolStripButton toolStripButton6;
         private System.Windows.Forms.ToolStripButton toolStripButton7;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button MaxStripButton;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Button MinStripButton;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Button button2;
     }
 }
 
